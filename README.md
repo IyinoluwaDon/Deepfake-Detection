@@ -1,12 +1,8 @@
-# Deepfake Image Classification Demo
+# Deepfake Image Classification
 
-A Flask demo that applies a saved Keras classifier to one uploaded face image. It is an image-level experiment, not a forensic authenticity system or video detector.
+A Flask application that applies a saved deep convolutional neural network to one uploaded face image. The notebook trains a grayscale 128 x 128 CNN with convolution, pooling, and global-average-pooling layers, followed by a sigmoid binary-class output. It uses Adam and binary cross-entropy and records ROC AUC and average precision during evaluation.
 
-## What is included
-
-- PNG/JPEG uploads handled in memory with an 8 MB limit
-- Raw-pixel grayscale 128 × 128 preprocessing to match the recorded training contract
-- Regression tests for upload and preprocessing behavior
+The notebook reads the real/fake image folders in the `real-vs-fake` dataset tree and builds train, validation, and test generators. The inference path preserves the recorded grayscale 128 x 128 preprocessing. `app/deepfake.h5` is the saved classifier, `ML_model/DFD.ipynb` records the experiment, and `tests/` covers upload and preprocessing behavior. PNG/JPEG uploads are processed in memory with an 8 MB request limit.
 
 ## Run locally
 
@@ -16,22 +12,3 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 python app/app.py
 ```
-
-## Verify
-
-python -m pip install -r requirements-dev.txt
-python -m pytest -q
-
-## Repository map
-
-`app/` contains the Flask interface and inference path. `app/deepfake.h5` is the saved model; `ML_model/DFD.ipynb` is the experiment notebook. `tests/` covers request/preprocessing behavior.
-
-## Evidence and limitations
-
-The supplied model is wired into the upload path. Automated tests cover interface contracts, not cross-source detection accuracy or evidentiary reliability.
-
-A prediction is not proof that media was manipulated. This project does not analyze video or provide forensic provenance. Dataset provenance, license, independent cross-dataset performance and subgroup behavior remain unverified. Do not use for consequential decisions.
-
-## License
-
-No repository license file is included. Unless the project owner adds a license, do not assume the code, data or model artifacts may be redistributed or reused. Verify third-party data and model terms separately.
